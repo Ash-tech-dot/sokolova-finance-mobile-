@@ -1,7 +1,69 @@
-/* Login - без изменений */
-.loginWrap, .loginBox, .loginLogo, .loginTitle, .loginSub, .loginForm, .loginInput, .loginError, .loginBtn { /* ... оставь как было */ }
+/* Login */
+.loginWrap {
+  min-height: 100vh;
+  background: var(--dark1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.loginBox {
+  background: var(--dark2);
+  border: 1px solid rgba(53, 87, 125, 0.3);
+  border-radius: 16px;
+  padding: 48px 44px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+.loginLogo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--cream1);
+  margin-bottom: 24px;
+}
+.loginLogo span { color: #6b9fc9; }
+.loginTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--cream1);
+  margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
+}
+.loginSub { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+.loginForm { display: flex; flex-direction: column; gap: 12px; }
+.loginInput {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(53,87,125,0.4);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: var(--cream1);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  text-align: center;
+  letter-spacing: 3px;
+  transition: border-color 0.2s;
+}
+.loginInput:focus { border-color: var(--accent); }
+.loginError { color: #ff6b6b; font-size: 13px; }
+.loginBtn {
+  background: var(--accent);
+  color: var(--cream1);
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.loginBtn:hover:not(:disabled) { background: #3d6490; }
+.loginBtn:disabled { opacity: 0.6; cursor: default; }
 
-/* ==================== LAYOUT ==================== */
+/* ==================== Layout ==================== */
 .page {
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -9,25 +71,96 @@
   background: #f5f7fa;
 }
 
-/* Desktop sidebar - без изменений */
-.sidebar { /* ... оставь как было */ }
+/* Sidebar (Desktop) */
+.sidebar {
+  background: var(--dark1);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  border-right: 1px solid rgba(53,87,125,0.2);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.sidebarLogo, .mobileLogo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cream1);
+  padding: 0 24px 24px;
+}
+.sidebarLogo span { color: #6b9fc9; }
+.sidebarNav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+}
+.filterBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  text-align: left;
+}
+.filterBtn:hover { background: rgba(53,87,125,0.15); color: var(--cream1); }
+.filterBtn.active { background: rgba(53,87,125,0.25); color: var(--cream1); }
+.sidebarFooter {
+  padding: 16px 12px 0;
+  border-top: 1px solid rgba(53,87,125,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.logoutBtn, .siteLink { /* оставь как было */ }
 
-/* ==================== МОБИЛЬНАЯ ВЕРСИЯ ==================== */
+/* Main */
+.main {
+  padding: 32px 36px;
+  overflow-x: auto;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+.pageTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dark1);
+}
+.refreshBtn {
+  background: var(--dark2);
+  color: var(--cream1);
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ===================== МОБИЛЬНАЯ ВЕРСИЯ ===================== */
 @media (max-width: 900px) {
-  .page {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-  }
-
+  .page { grid-template-columns: 1fr; }
   .sidebar { display: none; }
 
-  /* Верхняя шапка */
   .mobileHeader {
     background: var(--dark1);
     padding: 12px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     position: sticky;
     top: 0;
     z-index: 30;
@@ -35,10 +168,7 @@
   }
 
   .mobileLogo {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--cream1);
+    font-size: 17px;
     white-space: nowrap;
   }
 
@@ -47,115 +177,39 @@
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(53,87,125,0.4);
     border-radius: 9999px;
-    padding: 10px 16px;
+    padding: 9px 14px;
     color: var(--cream1);
     font-size: 15px;
   }
 
-  .hamburger {
-    font-size: 28px;
-    color: var(--cream1);
+  .hamburger, .refreshBtn {
     background: none;
     border: none;
+    color: var(--cream1);
+    font-size: 26px;
     cursor: pointer;
-    padding: 4px 8px;
+    padding: 4px;
   }
 
-  .refreshBtn {
-    background: rgba(255,255,255,0.1);
-    color: var(--cream1);
-    border: 1px solid rgba(53,87,125,0.4);
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-  /* Оверлей фильтров (сбоку) */
-  .filterOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 40;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-
-  .filterOverlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .mobileFilters {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 85%;
-    max-width: 320px;
-    height: 100%;
-    background: var(--dark1);
-    padding: 70px 20px 20px;
-    transition: right 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-    z-index: 50;
-    overflow-y: auto;
-  }
-
-  .mobileFilters.show {
-    right: 0;
-  }
-
-  .filterBtn {
-    padding: 14px 18px;
-    font-size: 16px;
-    border-radius: 12px;
-    background: rgba(53,87,125,0.3);
-    color: var(--cream1);
-    text-align: left;
-    border: none;
-    width: 100%;
-    margin-bottom: 8px;
-  }
-
-  .filterBtn.active {
-    background: #6b9fc9;
-    color: white;
-  }
-
-  /* Основной контент */
   .main {
-    padding: 20px 16px;
+    padding: 16px 14px;
     background: #f8f9fb;
-    min-height: 100vh;
   }
 
   .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
-  .pageTitle {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--dark1);
-    margin: 0;
-  }
+  .pageTitle { font-size: 22px; }
 }
 
 /* Пустое состояние */
 .empty {
   text-align: center;
-  padding: 120px 20px 80px;
+  padding: 100px 20px;
   color: #666;
 }
-
 .emptyIcon {
-  font-size: 72px;
-  margin-bottom: 16px;
+  font-size: 80px;
+  margin-bottom: 20px;
 }
