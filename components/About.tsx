@@ -1,10 +1,23 @@
 import styles from './About.module.css'
 import Image from 'next/image'
+import { GraduationIcon, BriefcaseIcon, UsersIcon } from './Icons'
 
 const credentials = [
-  { icon: '🎓', title: 'НИУ ВШЭ — Финансовый менеджмент', sub: 'Корпоративный университет НФ' },
-  { icon: '💼', title: 'Специализация: строительство, услуги, торговля', sub: 'Малый и средний бизнес' },
-  { icon: '✅', title: 'Действующие клиенты на постоянном сопровождении', sub: 'Долгосрочные партнёрские отношения' },
+  {
+    Icon: GraduationIcon,
+    title: 'НИУ ВШЭ — Финансовый менеджмент',
+    sub: 'Корпоративный университет НФ',
+  },
+  {
+    Icon: BriefcaseIcon,
+    title: 'Специализация: строительство, услуги, торговля',
+    sub: 'Малый и средний бизнес',
+  },
+  {
+    Icon: UsersIcon,
+    title: 'Действующие клиенты на постоянном сопровождении',
+    sub: 'Долгосрочные партнёрские отношения',
+  },
 ]
 
 export default function About() {
@@ -12,7 +25,9 @@ export default function About() {
     <section className={styles.about} id="about">
       <div className={styles.inner}>
         <div className={styles.tag}>Обо мне</div>
-        <h2 className={styles.title}>Финансовый директор,<br />который говорит просто</h2>
+        <h2 className={styles.title}>
+          Финансовый директор,<br />который говорит просто
+        </h2>
 
         <div className={styles.grid}>
           <div className={styles.photoWrap}>
@@ -29,19 +44,25 @@ export default function About() {
           </div>
 
           <div className={styles.text}>
-            <p>Я не просто считаю деньги — я создаю финансовую гармонию в вашем бизнесе.
+            <p>
+              Я не просто считаю деньги — я создаю финансовую гармонию в вашем бизнесе.
               Глубоко погружаясь в процессы компании, я выстраиваю систему управления так,
-              чтобы собственник чувствовал уверенность и свободу в каждом решении.</p>
-            <p>Работаю с компаниями из сферы строительства, услуг и торговли.
-              Мои клиенты — собственники и руководители малого и среднего бизнеса.</p>
+              чтобы собственник чувствовал уверенность и свободу в каждом решении.
+            </p>
+            <p>
+              Работаю с компаниями из сферы строительства, услуг и торговли.
+              Мои клиенты — собственники и руководители малого и среднего бизнеса.
+            </p>
 
             <ul className={styles.credList}>
-              {credentials.map(c => (
-                <li key={c.title} className={styles.credItem}>
-                  <span className={styles.credIcon}>{c.icon}</span>
+              {credentials.map(({ Icon, title, sub }) => (
+                <li key={title} className={styles.credItem}>
+                  <span className={styles.credIcon}>
+                    <Icon size={22} />
+                  </span>
                   <div>
-                    <strong>{c.title}</strong>
-                    <span>{c.sub}</span>
+                    <strong>{title}</strong>
+                    <span>{sub}</span>
                   </div>
                 </li>
               ))}
