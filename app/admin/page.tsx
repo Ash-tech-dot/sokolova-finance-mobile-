@@ -100,7 +100,6 @@ export default function AdminPage() {
     setLeads([])
     setSelected(null)
     setFilterStatus('all')
-    setLastUpdated(null)
   }
 
   const updateStatus = async (id: number, status: LeadStatus) => {
