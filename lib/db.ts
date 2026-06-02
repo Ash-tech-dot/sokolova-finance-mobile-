@@ -12,9 +12,11 @@ if (!fs.existsSync(DB_DIR)) {
 }
 
 const db = new Database(DB_PATH)
-
-// Включаем WAL-режим для лучшей производительности
-db.pragma('journal_mode = WAL')
+try {
+  db.pragma('journal_mode = WAL')
+} catch (e) {
+  // ignore during build
+}
 
 // Создаём таблицу заявок если не существует
 db.exec(`
