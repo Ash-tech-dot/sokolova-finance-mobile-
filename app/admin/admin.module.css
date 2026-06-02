@@ -62,18 +62,6 @@
 }
 .loginBtn:hover:not(:disabled) { background: #3d6490; }
 .loginBtn:disabled { opacity: 0.6; cursor: default; }
-.loginHint {
-  margin-top: 24px;
-  font-size: 12px;
-  color: rgba(240,232,213,0.3);
-  line-height: 1.6;
-}
-.loginHint code {
-  background: rgba(53,87,125,0.2);
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: #6b9fc9;
-}
 
 /* Layout */
 .page {
@@ -188,6 +176,16 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 28px;
+}
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.autoRefreshInfo {
+  font-size: 12px;
+  color: #aaa;
 }
 .pageTitle {
   font-family: 'Playfair Display', serif;
@@ -376,54 +374,95 @@
     z-index: 10;
     width: 100%;
     height: auto;
-    padding: 14px 16px;
+    padding: 12px 14px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  .sidebar::-webkit-scrollbar { display: none; }
   .sidebarLogo {
     margin: 0;
+    padding: 0;
+    border: none;
     flex-shrink: 0;
-    font-size: 16px;
+    font-size: 15px;
+    white-space: nowrap;
   }
   .sidebarNav {
     flex-direction: row;
     flex: 1;
     gap: 6px;
+    padding: 0;
     margin: 0;
     overflow-x: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
   }
+  .sidebarNav::-webkit-scrollbar { display: none; }
   .sidebarSection {
     display: none;
   }
   .filterBtn {
     flex-shrink: 0;
-    padding: 8px 14px;
+    padding: 7px 12px;
     font-size: 13px;
+    white-space: nowrap;
+    border-radius: 20px;
+    border: 1px solid rgba(53,87,125,0.3);
+  }
+  .filterBtn.active {
+    background: rgba(53,87,125,0.4);
+    border-color: rgba(53,87,125,0.6);
   }
   .sidebarFooter {
     margin: 0;
+    padding: 0;
+    border: none;
     flex-direction: row;
     flex-shrink: 0;
-    gap: 8px;
+    gap: 6px;
   }
-  .logoutBtn, .siteLink {
-    padding: 8px 12px;
+  .logoutBtn {
+    padding: 7px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+    border-radius: 20px;
+  }
+  .siteLink {
+    padding: 7px 10px;
     font-size: 13px;
     white-space: nowrap;
   }
   .main {
-    padding: 20px 16px;
+    padding: 16px 14px;
   }
   .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .headerRight {
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .autoRefreshInfo {
+    font-size: 11px;
   }
   .pageTitle {
-    font-size: 22px;
+    font-size: 20px;
+  }
+  .pageSub {
+    font-size: 13px;
+  }
+  .refreshBtn {
+    padding: 8px 14px;
+    font-size: 13px;
   }
   .detailGrid {
     grid-template-columns: 1fr 1fr;
@@ -431,73 +470,98 @@
 }
 
 @media (max-width: 768px) {
-  /* Превращаем таблицу заявок в карточки */
+  /* Карточки вместо таблицы */
   .tableWrap {
+    background: transparent;
+    border: none;
+    border-radius: 0;
     overflow: visible;
   }
   .table thead {
     display: none;
   }
-  .table, .table tbody, .table tr, .table td {
+  .table, .table tbody {
     display: block;
     width: 100%;
   }
   .table tr {
-    background: var(--dark2);
-    border: 1px solid rgba(53, 87, 125, 0.25);
+    display: block;
+    background: #fff;
+    border: 1px solid #e8eaed;
     border-radius: 12px;
     padding: 14px 16px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
   .table td {
-    padding: 6px 0;
+    display: flex;
+    align-items: baseline;
+    padding: 5px 0;
     border: none;
-    text-align: left;
-    position: relative;
+    font-size: 14px;
+    color: #333;
   }
   .table td::before {
     content: attr(data-label);
     display: inline-block;
-    width: 90px;
-    font-size: 12px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-right: 8px;
-  }
-  .tdId {
-    font-size: 16px;
+    min-width: 80px;
+    font-size: 11px;
     font-weight: 600;
-    color: var(--cream1);
-    border-bottom: 1px solid rgba(53, 87, 125, 0.2);
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    flex-shrink: 0;
+  }
+  /* Первая строка каждой карточки — имя и статус */
+  .tdId {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark1);
+    border-bottom: 1px solid #f0f0f0;
     padding-bottom: 10px !important;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .tdId::before {
     display: none;
   }
   .tdName {
     font-size: 15px;
+    font-weight: 600;
+    color: var(--dark1);
   }
   .tdDate {
     font-size: 12px;
+    color: #999;
   }
   .actions {
-    margin-top: 10px;
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
     justify-content: flex-start;
+    width: 100%;
+  }
+  .actions::before {
+    display: none;
+  }
+  .statusSelect {
+    flex: 1;
   }
   .detail {
-    padding: 20px 16px;
+    padding: 18px 14px;
+    border-radius: 12px;
   }
   .detailGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
 }
 
 @media (max-width: 480px) {
   .main {
-    padding: 16px 12px;
+    padding: 14px 10px;
   }
   .loginBox {
     padding: 36px 24px;
@@ -506,6 +570,10 @@
     font-size: 20px;
   }
   .pageTitle {
-    font-size: 20px;
+    font-size: 18px;
+  }
+  .detailGrid {
+    grid-template-columns: 1fr;
   }
 }
+
