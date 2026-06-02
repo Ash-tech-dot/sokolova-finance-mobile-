@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import styles from './ContactForm.module.css'
+import { CheckCircleIcon } from './Icons'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
@@ -72,7 +73,9 @@ export default function ContactForm() {
 
         {status === 'success' ? (
           <div className={styles.success}>
-            <div className={styles.check}>✅</div>
+            <div className={styles.check}>
+              <CheckCircleIcon size={64} />
+            </div>
             <h3>Заявка отправлена!</h3>
             <p>Любовь свяжется с вами в течение 24 часов</p>
           </div>
