@@ -39,8 +39,7 @@ export default function AdminPage() {
   const [error, setError] = useState('')
   const [selected, setSelected] = useState<Lead | null>(null)
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all')
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
-  const [countdown, setCountdown] = useState(AUTO_REFRESH_INTERVAL / 1000)
+
 
   const secretRef = useRef(secret)
   useEffect(() => { secretRef.current = secret }, [secret])
@@ -68,8 +67,7 @@ export default function AdminPage() {
       const data = await res.json()
       setLeads(Array.isArray(data.leads) ? data.leads : [])
       setAuthed(true)
-      setLastUpdated(new Date())
-      setCountdown(AUTO_REFRESH_INTERVAL / 1000)
+
     } catch {
       if (!silent) setError('Ошибка загрузки')
     } finally {
@@ -85,14 +83,9 @@ export default function AdminPage() {
       fetchLeads(secretRef.current, true)
     }, AUTO_REFRESH_INTERVAL)
 
-    // Обратный отсчёт до следующего обновления
-    const tick = setInterval(() => {
-      setCountdown(prev => (prev <= 1 ? AUTO_REFRESH_INTERVAL / 1000 : prev - 1))
-    }, 1000)
 
     return () => {
       clearInterval(interval)
-      clearInterval(tick)
     }
   }, [authed, fetchLeads])
 
@@ -247,20 +240,13 @@ export default function AdminPage() {
             <h1 className={styles.pageTitle}>Заявки клиентов</h1>
             <p className={styles.pageSub}>{filtered.length} заявок</p>
           </div>
-          <div className={styles.headerRight}>
-            {lastUpdated && (
-              <span className={styles.autoRefreshInfo}>
-                Обновление через {countdown} сек
-              </span>
-            )}
-            <button
-              type="button"
-              className={styles.refreshBtn}
-              onClick={() => fetchLeads(secret)}
-            >
-              ↻ Обновить
-            </button>
-          </div>
+          <button
+            type="button"
+            className={styles.refreshBtn}
+            onClick={() => fetchLeads(secret)}
+          >
+            ↻ Обновить
+          </button>
         </div>
 
         {loading ? (
