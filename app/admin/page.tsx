@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import styles from './admin.module.css'
 
 type LeadStatus = 'new' | 'in_progress' | 'done'
@@ -29,6 +29,8 @@ const STATUS_COLORS: Record<LeadStatus, string> = {
   done: '#4caf72',
 }
 
+const AUTO_REFRESH_INTERVAL = 30_000 // 30 секунд
+
 export default function AdminPage() {
   const [secret, setSecret] = useState('')
   const [authed, setAuthed] = useState(false)
@@ -37,13 +39,18 @@ export default function AdminPage() {
   const [error, setError] = useState('')
   const [selected, setSelected] = useState<Lead | null>(null)
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all')
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
+  const [countdown, setCountdown] = useState(AUTO_REFRESH_INTERVAL / 1000)
 
-  const fetchLeads = useCallback(async (sec: string) => {
+  const secretRef = useRef(secret)
+  useEffect(() => { secretRef.current = secret }, [secret])
+
+  const fetchLeads = useCallback(async (sec: string, silent = false) => {
     if (!sec) {
       setError('Введите пароль')
       return
     }
-    setLoading(true)
+    if (!silent) setLoading(true)
     setError('')
     try {
       const res = await fetch('/api/leads', {
@@ -61,12 +68,33 @@ export default function AdminPage() {
       const data = await res.json()
       setLeads(Array.isArray(data.leads) ? data.leads : [])
       setAuthed(true)
+      setLastUpdated(new Date())
+      setCountdown(AUTO_REFRESH_INTERVAL / 1000)
     } catch {
-      setError('Ошибка загрузки')
+      if (!silent) setError('Ошибка загрузки')
     } finally {
-      setLoading(false)
+      if (!silent) setLoading(false)
     }
   }, [])
+
+  // Автообновление каждые 30 секунд
+  useEffect(() => {
+    if (!authed) return
+
+    const interval = setInterval(() => {
+      fetchLeads(secretRef.current, true)
+    }, AUTO_REFRESH_INTERVAL)
+
+    // Обратный отсчёт до следующего обновления
+    const tick = setInterval(() => {
+      setCountdown(prev => (prev <= 1 ? AUTO_REFRESH_INTERVAL / 1000 : prev - 1))
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+      clearInterval(tick)
+    }
+  }, [authed, fetchLeads])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -79,6 +107,7 @@ export default function AdminPage() {
     setLeads([])
     setSelected(null)
     setFilterStatus('all')
+    setLastUpdated(null)
   }
 
   const updateStatus = async (id: number, status: LeadStatus) => {
@@ -166,9 +195,6 @@ export default function AdminPage() {
               {loading ? 'Проверяем...' : 'Войти'}
             </button>
           </form>
-          <p className={styles.loginHint}>
-            Пароль задаётся в переменной окружения <code>ADMIN_SECRET</code>
-          </p>
         </div>
       </div>
     )
@@ -221,13 +247,20 @@ export default function AdminPage() {
             <h1 className={styles.pageTitle}>Заявки клиентов</h1>
             <p className={styles.pageSub}>{filtered.length} заявок</p>
           </div>
-          <button
-            type="button"
-            className={styles.refreshBtn}
-            onClick={() => fetchLeads(secret)}
-          >
-            ↻ Обновить
-          </button>
+          <div className={styles.headerRight}>
+            {lastUpdated && (
+              <span className={styles.autoRefreshInfo}>
+                Обновление через {countdown} сек
+              </span>
+            )}
+            <button
+              type="button"
+              className={styles.refreshBtn}
+              onClick={() => fetchLeads(secret)}
+            >
+              ↻ Обновить
+            </button>
+          </div>
         </div>
 
         {loading ? (
