@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: sokolova-finance
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ADMIN_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+    # Note: бесплатный план Render не поддерживает persistent disks.
+    # Для демо это ОК — данные хранятся в течение сессии (~15 мин).
+    # Для постоянного хранения — переключить план или добавить disk:
+    # disk:
+    #   name: data
+    #   mountPath: /app/data
+    #   sizeGB: 1

@@ -1,0 +1,281 @@
+.hero {
+  min-height: 100vh;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  padding: 120px 40px 80px;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.gridLines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image: 
+    linear-gradient(#64748b 1px, transparent 1px),
+    linear-gradient(90deg, #64748b 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Основной контент */
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  align-items: center;
+}
+
+.left {
+  max-width: 580px;
+}
+
+/* Анимации */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s 0.2s forwards;
+  opacity: 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 50%;
+  animation: blink 2s infinite;
+}
+
+.h1 {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 28px;
+  animation: fadeUp 0.9s 0.4s forwards;
+  opacity: 0;
+}
+
+.accent {
+  color: #60a5fa;
+}
+
+.sub {
+  font-size: 18px;
+  line-height: 1.65;
+  color: #cbd5e1;
+  margin-bottom: 40px;
+  animation: fadeUp 0.9s 0.6s forwards;
+  opacity: 0;
+}
+
+.btns {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.9s 0.8s forwards;
+  opacity: 0;
+}
+
+.btnPrimary {
+  background: #3b82f6;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btnPrimary:hover {
+  background: #2563eb;
+  transform: translateY(-3px);
+}
+
+.btnOutline {
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btnOutline:hover {
+  border-color: white;
+  background: rgba(255,255,255,0.05);
+}
+
+/* Фото */
+.photoCol {
+  position: relative;
+  animation: fadeLeft 1s 0.5s forwards;
+  opacity: 0;
+}
+
+.photo {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 16px;
+  background: #1e2937;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.photoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 110px;
+  font-weight: 700;
+  color: rgba(148, 163, 184, 0.15);
+  background: linear-gradient(135deg, #1e2937, #334155);
+}
+
+.badge {
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  background: #0f172a;
+  border: 1px solid #3b82f6;
+  border-radius: 12px;
+  padding: 16px 24px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.badgeNum {
+  font-size: 32px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.badgeLbl {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* === МОБИЛЬНАЯ ВЕРСИЯ === */
+
+/* Планшеты и крупные телефоны */
+@media (max-width: 768px) {
+  .hero {
+    min-height: auto;
+    padding: 100px 20px 60px;
+  }
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .left {
+    max-width: none;
+    order: 1;
+  }
+  .photoCol {
+    order: 2;
+    max-width: 280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .photo {
+    aspect-ratio: 4/5;
+  }
+  .photoPlaceholder {
+    font-size: 80px;
+  }
+  .tag {
+    font-size: 12px;
+    padding: 6px 16px;
+    margin-bottom: 20px;
+  }
+  .h1 {
+    font-size: 40px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .sub {
+    font-size: 16px;
+    margin-bottom: 28px;
+  }
+  .btns {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .btnPrimary, .btnOutline {
+    padding: 14px 24px;
+    font-size: 15px;
+    text-align: center;
+  }
+  .badge {
+    bottom: -16px;
+    left: -12px;
+    padding: 12px 18px;
+  }
+  .badgeNum {
+    font-size: 24px;
+  }
+  .badgeLbl {
+    font-size: 11px;
+  }
+}
+
+/* Узкие телефоны (iPhone SE и т.п.) */
+@media (max-width: 480px) {
+  .hero {
+    padding: 90px 16px 50px;
+  }
+  .h1 {
+    font-size: 34px;
+  }
+  .sub {
+    font-size: 15px;
+  }
+  .photoCol {
+    max-width: 220px;
+  }
+  .photoPlaceholder {
+    font-size: 64px;
+  }
+  .gridLines {
+    background-size: 40px 40px;
+  }
+}
